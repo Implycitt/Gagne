@@ -9,7 +9,14 @@
     "lint": "oxlint",
     "lint:ci": "oxlint --format=github",
     "lint:fix": "oxlint --fix",
-    "typecheck": "bun check"
+    "typecheck": "bun check",
+    "build": "bun build ./src/mcp/main.ts --outdir ./dist --minify"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/server": "^2.4.0",
+    "oxfmt": "^0.79.0",
+    "oxlint": "^1.94.0",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@types/bun": "^1.4.5",
@@ -17,11 +24,5 @@
   },
   "peerDependencies": {
     "typescript": "^7"
-  },
-  "dependencies": {
-    "@modelcontextprotocol/server": "^2.4.0",
-    "oxfmt": "^0.79.0",
-    "oxlint": "^1.94.0",
-    "zod": "^4.6.7"
   }
 }
