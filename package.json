@@ -4,6 +4,11 @@
   "type": "module",
   "scripts": {
     "dev": "bun run src/mcp/main.ts",
+    "fmt": "oxfmt",
+    "fmt:ci": "oxfmt --check",
+    "lint": "oxlint",
+    "lint:ci": "oxlint --format=github",
+    "lint:fix": "oxlint --fix",
     "typecheck": "bun check"
   },
   "devDependencies": {
@@ -15,6 +20,8 @@
   },
   "dependencies": {
     "@modelcontextprotocol/server": "^2.4.0",
+    "oxfmt": "^0.79.0",
+    "oxlint": "^1.94.0",
     "zod": "^4.6.7"
   }
 }
