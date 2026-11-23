@@ -39,9 +39,6 @@
   "sortPackageJson": {
     "sortScripts": true
   },
-  "sortTailwindcss": {
-    "stylesheet": "./client/src/lib/css/index.css"
-  },
   "tabWidth": 4,
   "trailingComma": "none"
 }
