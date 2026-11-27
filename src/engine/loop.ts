@@ -74,6 +74,9 @@ try {
                             result = await capability.run(capability.schema.parse(call.function.arguments));
                         } catch (err) {
                             result = err instanceof Error ? err.message : String(err);
+                            if (history.at(-1)?.role === "user") {
+                                history.pop();
+                            }
                         }
                     }
 

@@ -1,6 +1,6 @@
 import * as z from "zod";
 
-import { mcpListFiles, mcpReadFile, mcpWriteFile } from "./fs.ts";
+import { mcpEditFile, mcpListFiles, mcpReadFile, mcpWriteFile } from "./fs.ts";
 
 export type Capability = {
     name: string;
@@ -38,5 +38,16 @@ export const capabilities: Capability[] = [
             depth: z.number().int().min(1).max(3).default(2)
         }),
         run: async ({ path, depth }) => mcpListFiles(path, depth)
+    },
+    {
+        name: "edit",
+        description:
+            "Replace one exact occurence of find. Returns the line number; do not re-read the file to verify. If it reports multiple matches, include more surrounding lines. Use the shortest unique fragment.",
+        schema: z.object({
+            path: z.string().min(1).describe("absolute path"),
+            find: z.string().min(1).describe("exact existing text, exactly one occurence"),
+            replace: z.string().describe("replacement text; may be empty to delete")
+        }),
+        run: async ({ path, find, replace }) => mcpEditFile(path, find, replace)
     }
 ];
