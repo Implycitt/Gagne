@@ -4,15 +4,14 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "bun build ./src/mcp/main.ts --outdir ./dist --minify",
+    "build": "bun build ./src/mcp/main.ts --outdir ./dist --production",
     "chat": "bun run src/engine/loop.ts",
     "dev": "bun run src/mcp/main.ts",
     "fmt": "bun fmt",
     "fmt:ci": "bun fmt --check",
     "lint": "oxlint",
     "lint:ci": "oxlint --format=github",
-    "lint:fix": "oxlint --fix",
-    "typecheck": "bun check"
+    "lint:fix": "oxlint --fix"
   },
   "dependencies": {
     "@modelcontextprotocol/server": "^2.4.0",

@@ -29,4 +29,4 @@ jobs:
         run: bun run build
 
       - name: Typecheck Project
-        run: bun typecheck
+        run: bun check
