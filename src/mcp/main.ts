@@ -2,7 +2,7 @@ import { McpServer, type CallToolResult } from "@modelcontextprotocol/server";
 import { serveStdio } from "@modelcontextprotocol/server/stdio";
 import * as z from "zod";
 
-import { mcpReadFile, mcpWriteFile } from "../capabilities/fs.ts";
+import { capabilities } from "../capabilities/index.ts";
 import { createMemoryStore } from "../core/store.ts";
 
 const store = createMemoryStore();
@@ -77,58 +77,29 @@ function createServer(): McpServer {
         }
     );
 
-    server.registerTool(
-        "Write",
-        {
-            title: "Write to a file",
-            description: "Write to a file",
-            inputSchema: z.object({
-                path: z.string().min(1).describe("absolute path"),
-                text: z.string().describe("text to write")
-            })
-        },
-
-        async ({ path, text }) => {
-            try {
-                return {
-                    content: [
-                        {
-                            type: "text" as const,
-                            text: `wrote ${await mcpWriteFile(path, text)} bytes to ${path}`
-                        }
-                    ]
-                };
-            } catch (err) {
-                return fail(err instanceof Error ? err.message : String(err));
+    for (const capability of capabilities) {
+        server.registerTool(
+            capability.name,
+            {
+                description: capability.description,
+                inputSchema: capability.schema
+            },
+            async args => {
+                try {
+                    return {
+                        content: [
+                            {
+                                type: "text" as const,
+                                text: await capability.run(args)
+                            }
+                        ]
+                    };
+                } catch (err) {
+                    return fail(err instanceof Error ? err.message : String(err));
+                }
             }
-        }
-    );
-
-    server.registerTool(
-        "Read",
-        {
-            title: "Read a file",
-            description: "Read a file",
-            inputSchema: z.object({
-                path: z.string().min(1).describe("absolute path")
-            })
-        },
-
-        async ({ path }) => {
-            try {
-                return {
-                    content: [
-                        {
-                            type: "text" as const,
-                            text: await mcpReadFile(path)
-                        }
-                    ]
-                };
-            } catch (err) {
-                return fail(err instanceof Error ? err.message : String(err));
-            }
-        }
-    );
+        );
+    }
 
     return server;
 }

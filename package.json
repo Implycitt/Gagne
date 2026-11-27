@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "bun build ./src/mcp/main.ts --outdir ./dist --minify",
+    "chat": "bun run src/engine/loop.ts",
     "dev": "bun run src/mcp/main.ts",
     "fmt": "bun fmt",
     "fmt:ci": "bun fmt --check",
