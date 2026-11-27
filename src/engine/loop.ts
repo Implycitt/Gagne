@@ -32,6 +32,7 @@ const rl = createInterface({
     output: process.stdout
 });
 
+// TODO: The model wants to spit out a human readable response but like I don't care so yank that so it go faster.
 try {
     while (true) {
         const line = (await rl.question("\n> ")).trim();
@@ -58,7 +59,6 @@ try {
 
                 const calls = reply.tool_calls ?? [];
                 if (calls.length === 0) {
-                    console.log("empty");
                     finished = true;
                     break;
                 }
@@ -87,7 +87,7 @@ try {
             }
 
             if (!finished) {
-                console.log("12 turns and no answer");
+                console.log("10 turns and no answer");
             }
         } catch (err) {
             console.log(err instanceof Error ? err.message : String(err));
