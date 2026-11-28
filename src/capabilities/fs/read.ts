@@ -1,5 +1,5 @@
 import { readFile } from "node:fs/promises";
-import { isAbsolute, resolve } from "node:path";
+import { resolve } from "node:path";
 
 import { assertAbsolute, splitLines } from "./paths.ts";
 
@@ -19,7 +19,7 @@ export async function mcpReadFile(path: string, from: number = 1, to?: number): 
 
     const raw = await readFile(resolve(path), "utf8");
     if (raw.length === 0) {
-      return `[lines 0-0 of 0]\n`;
+        return `[lines 0-0 of 0]\n`;
     }
     const lines = splitLines(raw);
     const total = lines.length;
