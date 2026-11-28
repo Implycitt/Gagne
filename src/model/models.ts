@@ -9,7 +9,7 @@ export type ModelSpec = {
 export const models = {
     reason: {
         id: "gpt-oss:20b",
-        numContext: 16384,
+        numContext: 32768,
         numPredict: 4096,
         temperature: 0.2,
         think: "low"

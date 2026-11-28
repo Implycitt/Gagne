@@ -24,7 +24,7 @@ const history: Message[] = [
     {
         role: "system",
         content:
-            "You are a coding agent with file tools. Use them to act on disc. Every path is absolute. Only claim a file was written when a tool result says so."
+            "You are a coding agent with file tools. Use them to act on disc. Every path is absolute. Only claim a file was written when a tool result says so. Never write prose. Emit the tool call immediately with no preamble, no explanation, no confirmation, no restating the request."
     }
 ];
 
@@ -35,7 +35,6 @@ const rl = createInterface({
 
 const spec = models.code;
 
-// TODO: The model wants to spit out a human readable response but like I don't care so yank that so it go faster.
 try {
     while (true) {
         const line = (await rl.question("\n> ")).trim();
