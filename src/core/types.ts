@@ -8,7 +8,7 @@ export type PhaseSpec = {
     model: ModelKey;
     tools: string[];
     maxTurns: number;
-    done: (artifact: string) => boolean;
+    done: string;
 };
 
 export type RunStatus = "queued" | "running" | "blocked" | "done" | "failed" | "cancelled";

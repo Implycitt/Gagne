@@ -27,8 +27,8 @@ export const capabilities: Capability[] = [
     },
     {
         name: "write",
-        //TODO: write a better description so the model isn't lobotomized
-        description: "write to a file",
+        description:
+            "create a file with exactly the text given. Overwrites the file if it already exists and creates parent directories as needed. Anything already in it and not included in the text gets wiped. There is no undo. Use it only for a file that does not exist yet. To change a file that exists use edit. The result reports the byte count written.",
         schema: z.object({
             path: z.string().min(1).describe("absolute path"),
             text: z.string().describe("text to write to the file")
@@ -41,14 +41,14 @@ export const capabilities: Capability[] = [
             "list a directory tree. Depth is 2 (default), max 10. Include files inside subdirectories; use 1 for just the top level and 3 for deeper trees. Directories end in /, files show byte size.",
         schema: z.object({
             path: z.string().min(1).describe("absolute path"),
-            depth: z.number().int().min(1).max(3).default(2)
+            depth: z.number().int().min(1).max(10).default(2)
         }),
         run: async ({ path, depth }) => mcpListFiles(path, depth)
     },
     {
         name: "edit",
         description:
-            "Replace one exact occurence of find. Returns the line number; do not re-read the file to verify. If it reports multiple matches, include more surrounding lines. Use the shortest unique fragment.",
+            "Replace one exact occurrence of find. Returns the line number; do not re-read the file to verify. If it reports multiple matches, include more surrounding lines. Use the shortest unique fragment.",
         schema: z.object({
             path: z.string().min(1).describe("absolute path"),
             find: z.string().min(1).describe("exact existing text, exactly one occurence"),

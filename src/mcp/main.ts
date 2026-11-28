@@ -5,6 +5,7 @@ import * as z from "zod";
 import { capabilities } from "../capabilities/index.ts";
 import { errorText } from "../core/errors.ts";
 import { createMemoryStore } from "../core/store.ts";
+import { executeRun } from "../engine/run.ts";
 
 const store = createMemoryStore();
 
@@ -27,7 +28,8 @@ function createServer(): McpServer {
         "start",
         {
             title: "Start a run",
-            description: "Starts and queues a run. Returns the full run record.",
+            description:
+                "Starts a run and returns its record immediately. The run advances through its phases in the background. Use status to follow.",
             inputSchema: z.object({
                 brief: z.string().min(1).describe("product brief"),
                 projectDir: z.string().min(1).describe("Directory the run has access to for read and write operations"),
@@ -36,6 +38,7 @@ function createServer(): McpServer {
         },
         async ({ brief, projectDir, budgetMinutes }) => {
             const run = await store.create({ brief, projectDir, budgetMinutes });
+            void executeRun(run, store);
             return {
                 content: [
                     {
@@ -51,7 +54,8 @@ function createServer(): McpServer {
         "status",
         {
             title: "run status",
-            description: "Returns a full run record or error if there is no id",
+            description:
+                "Returns a full run record by id (status, current phase, and the note) or error if there is no id",
             inputSchema: z.object({ id: z.string().min(1) })
         },
         async ({ id }) => {
