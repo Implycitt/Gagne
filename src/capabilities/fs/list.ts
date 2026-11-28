@@ -1,11 +1,11 @@
 import { type Dirent } from "node:fs";
 import { readdir, stat } from "node:fs/promises";
-import { isAbsolute, join, relative, resolve } from "node:path";
+import { join, relative, resolve } from "node:path";
+
+import { assertAbsolute } from "./paths.ts";
 
 export async function mcpListFiles(path: string, depth: number = 1): Promise<string> {
-    if (!isAbsolute(path)) {
-        throw new Error(`path must be absolute: ${path}`);
-    }
+    assertAbsolute(path);
 
     const root = resolve(path);
     const lines: string[] = [];

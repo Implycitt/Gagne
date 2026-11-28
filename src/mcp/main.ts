@@ -3,6 +3,7 @@ import { serveStdio } from "@modelcontextprotocol/server/stdio";
 import * as z from "zod";
 
 import { capabilities } from "../capabilities/index.ts";
+import { errorText } from "../core/errors.ts";
 import { createMemoryStore } from "../core/store.ts";
 
 const store = createMemoryStore();
@@ -49,8 +50,8 @@ function createServer(): McpServer {
     server.registerTool(
         "status",
         {
-            title: "Get run status",
-            description: "Return a run id or error",
+            title: "run status",
+            description: "Returns a full run record or error if there is no id",
             inputSchema: z.object({ id: z.string().min(1) })
         },
         async ({ id }) => {
@@ -95,7 +96,7 @@ function createServer(): McpServer {
                         ]
                     };
                 } catch (err) {
-                    return fail(err instanceof Error ? err.message : String(err));
+                    return fail(errorText(err));
                 }
             }
         );

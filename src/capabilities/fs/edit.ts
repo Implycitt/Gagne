@@ -1,10 +1,10 @@
 import { readFile, writeFile, rename } from "node:fs/promises";
-import { isAbsolute, resolve } from "node:path";
+import { resolve } from "node:path";
+
+import { assertAbsolute } from "./paths.ts";
 
 export async function mcpEditFile(path: string, find: string, replace: string): Promise<string> {
-    if (!isAbsolute(path)) {
-        throw new Error(`path must be absolute: ${path}`);
-    }
+    assertAbsolute(path);
     if (find.length === 0) {
         throw new Error(`find is empty`);
     }
