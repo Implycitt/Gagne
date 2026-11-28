@@ -11,6 +11,13 @@ export type Phase = {
     done: (artifact: string) => boolean;
 };
 
+export type PhaseSpec = {
+    model: ModelKey;
+    tools: string[];
+    maxTurns: number;
+    done: (artifct: string) => boolean;
+};
+
 export type RunStatus = "queued" | "running" | "blocked" | "done" | "failed" | "cancelled";
 
 export type RunPatch = Partial<Omit<RunRecord, "id" | "startedAt">>;
@@ -19,7 +26,7 @@ export interface RunRecord {
     id: string;
     brief: string;
     projectDir: string;
-    phase: Phase;
+    phase: PhaseName;
     status: RunStatus;
     startedAt: number;
     deadlineAt: number;

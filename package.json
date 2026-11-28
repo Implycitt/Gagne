@@ -6,6 +6,7 @@
   "scripts": {
     "build": "bun build ./src/mcp/main.ts --outdir ./dist --production",
     "chat": "bun run src/engine/loop.ts",
+    "check": "tsc --noEmit",
     "dev": "bun run src/mcp/main.ts",
     "fmt": "bun fmt",
     "fmt:ci": "bun fmt --check",
