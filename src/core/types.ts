@@ -4,18 +4,11 @@ export const phaseNames = ["intake", "concept", "plan", "build", "test", "harden
 
 export type PhaseName = (typeof phaseNames)[number];
 
-export type Phase = {
-    model: ModelKey;
-    tools: string[];
-    maxTurns: number;
-    done: (artifact: string) => boolean;
-};
-
 export type PhaseSpec = {
     model: ModelKey;
     tools: string[];
     maxTurns: number;
-    done: (artifct: string) => boolean;
+    done: (artifact: string) => boolean;
 };
 
 export type RunStatus = "queued" | "running" | "blocked" | "done" | "failed" | "cancelled";
