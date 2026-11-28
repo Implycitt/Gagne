@@ -1,6 +1,15 @@
-export const phases = ["intake", "concept", "plan", "build", "test", "harden", "package"] as const;
+import type { ModelKey } from "../model/models.ts";
 
-export type Phase = (typeof phases)[number];
+export const phaseNames = ["intake", "concept", "plan", "build", "test", "harden", "package"] as const;
+
+export type PhaseName = (typeof phaseNames)[number];
+
+export type Phase = {
+    model: ModelKey;
+    tools: string[];
+    maxTurns: number;
+    done: (artifact: string) => boolean;
+};
 
 export type RunStatus = "queued" | "running" | "blocked" | "done" | "failed" | "cancelled";
 

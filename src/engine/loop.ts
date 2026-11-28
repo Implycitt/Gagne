@@ -3,6 +3,7 @@ import * as z from "zod";
 import { createInterface } from "node:readline/promises";
 
 import { capabilities } from "../capabilities/index.ts";
+import { models } from "../model/models.ts";
 import { chat, type Message } from "../model/ollama.ts";
 
 const tools = capabilities.map(capability => {
@@ -32,6 +33,8 @@ const rl = createInterface({
     output: process.stdout
 });
 
+const spec = models.code;
+
 // TODO: The model wants to spit out a human readable response but like I don't care so yank that so it go faster.
 try {
     while (true) {
@@ -54,11 +57,22 @@ try {
             let finished = false;
 
             for (let turn = 1; turn <= 10; turn++) {
-                const reply = await chat(history, tools);
-                history.push(reply);
+                const reply = await chat(spec, history, tools);
+                history.push(reply.message);
 
-                const calls = reply.tool_calls ?? [];
+                const calls = reply.message.tool_calls ?? [];
+                if (reply.doneReason === "length" && calls.length === 0) {
+                    history.pop();
+                    continue;
+                }
+
+                if (calls.length === 0 && reply.message.content.trim() === "") {
+                    history.pop();
+                    continue;
+                }
+
                 if (calls.length === 0) {
+                    console.log(reply.message.content);
                     finished = true;
                     break;
                 }
@@ -74,9 +88,6 @@ try {
                             result = await capability.run(capability.schema.parse(call.function.arguments));
                         } catch (err) {
                             result = err instanceof Error ? err.message : String(err);
-                            if (history.at(-1)?.role === "user") {
-                                history.pop();
-                            }
                         }
                     }
 
